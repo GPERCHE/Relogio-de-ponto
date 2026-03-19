@@ -1,0 +1,37 @@
+const { validarIntervalo } = require("./clt");
+
+app.post("/ponto", auth, (req, res) => {
+  const { tipo, latitude, longitude } = req.body;
+
+  if (!dentroDaArea(latitude, longitude)) {
+    return res.status(400).json({ erro: "Fora da área permitida" });
+  }
+
+  // Buscar últimos registros do dia
+  db.all(
+    `SELECT * FROM registros 
+     WHERE usuario_id=? 
+     AND DATE(data_hora)=DATE('now')`,
+    [req.user.id],
+    (err, rows) => {
+
+      const tipos = rows.map(r => r.tipo);
+
+      // Ordem obrigatória
+      const ordem = ["entrada", "intervalo", "retorno", "saida"];
+      const proximo = ordem[tipos.length];
+
+      if (tipo !== proximo) {
+        return res.status(400).json({
+          erro: `Ordem inválida. Próximo: ${proximo}`
+        });
+      }
+
+      db.run(
+        "INSERT INTO registros (usuario_id, tipo, latitude, longitude) VALUES (?, ?, ?, ?)",
+        [req.user.id, tipo, latitude, longitude],
+        () => res.json({ ok: true })
+      );
+    }
+  );
+});
