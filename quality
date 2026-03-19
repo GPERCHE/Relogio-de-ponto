@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Ponto</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login">
+  <h2>Login</h2>
+  <input id="email" placeholder="Email"><br>
+  <input id="senha" type="password" placeholder="Senha"><br>
+  <button onclick="login()">Entrar</button>
+</div>
+
+<div id="app" style="display:none;">
+  <h2 id="nome"></h2>
+
+  <div class="botoes">
+    <button onclick="bater('entrada')">Entrada</button>
+    <button onclick="bater('intervalo')">Intervalo</button>
+    <button onclick="bater('retorno')">Retorno</button>
+    <button onclick="bater('saida')">Saída</button>
+  </div>
+
+  <h3>Registros de hoje</h3>
+  <ul id="lista"></ul>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
